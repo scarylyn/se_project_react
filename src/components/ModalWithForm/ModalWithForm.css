@@ -78,12 +78,28 @@
   margin-right: 8px;
 }
 
+.modal__radio-buttons:disabled {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.modal__radio-input:disabled {
+  background: rgba(0, 0, 0, 0.5);
+}
+
 .modal__submit {
   width: 124px;
   height: 36px;
   border-radius: 4px;
   padding: 8px 16px;
   border: none;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 1);
   color: rgba(255, 255, 255, 1);
+}
+
+.modal__submit:hover {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modal__submit:disabled {
+  background: rgba(0, 0, 0, 0.3);
 }

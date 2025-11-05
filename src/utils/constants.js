@@ -59,7 +59,21 @@ export const weatherOptions = [
     condition: "storm",
     url: new URL("../assets/night/storm.png", import.meta.url).href,
   },
+  {
+    day: false,
+    condition: "",
+    url: new URL("../assets/night/default.png", import.meta.url).href,
+  },
 ];
+
+export const defaultWeatherOptions = {
+  day: {
+    url: new URL("../assets/day/default.png", import.meta.url).href,
+  },
+  night: {
+    url: new URL("../assets/night/default.png", import.meta.url).href,
+  },
+};
 
 export const defaultClothingItems = [
   {

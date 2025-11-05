@@ -21,14 +21,32 @@ function App() {
     setActiveModal("add-garment");
   };
 
-  const closeActiveModal = () => {
-    setActiveModal("");
-  };
-
   const handleCardClick = (card) => {
     setActiveModal("preview");
     setSelectedCard(card);
   };
+
+  const closeActiveModal = () => {
+    setActiveModal("");
+  };
+
+  const handleEscape = (evt) => {
+    if (evt.key === "Escape") {
+      setActiveModal("");
+    }
+  };
+
+  useEffect(() => {
+    if (activeModal) {
+      document.addEventListener("keydown", handleEscape);
+    } else {
+      document.removeEventListener("keydown", handleEscape);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [activeModal]);
 
   useEffect(() => {
     getWeather(coordinates, APIkey)
