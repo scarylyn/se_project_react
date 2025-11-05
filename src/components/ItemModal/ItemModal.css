@@ -2,16 +2,19 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  max-height: 610px;
+  height: 610px;
+  width: 498px;
 }
 
 .modal__image {
   align-self: center;
-  width: 500px;
+  margin-top: -28px;
+  width: 115%;
   height: auto;
 }
 
 .modal__footer {
+  flex-grow: 0;
   background-color: #fff;
 }
 
@@ -25,4 +28,9 @@
   font-size: 20px;
   font-weight: 700;
   margin: 0;
+}
+
+.modal__close_preview {
+  top: 24px;
+  right: 24px;
 }
