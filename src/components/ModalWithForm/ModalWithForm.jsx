@@ -1,18 +1,20 @@
-import x from "../../assets/x.svg";
+import closeIcon from "../../assets/x.svg";
 import "./ModalWithForm.css";
 
-function ModalWithForm({ children, title, buttonText, activeModal, onClose }) {
+function ModalWithForm({
+  children,
+  title,
+  buttonText,
+  activeModal,
+  onClose,
+  isOpen,
+}) {
   return (
-    <div
-      onClick={onClose}
-      className={`modal ${
-        activeModal === "add-garment" ? "modal__opened" : ""
-      }`}
-    >
+    <div onClick={onClose} className={`modal ${isOpen ? "modal__opened" : ""}`}>
       <div onClick={(e) => e.stopPropagation()} className="modal__content">
         <h2 className="modal__title">{title}</h2>
         <button type="button" className="modal__close">
-          <img onClick={onClose} src={x} alt="close icon" />
+          <img onClick={onClose} src={closeIcon} alt="close icon" />
         </button>
         <form className="modal__form">
           {children}
