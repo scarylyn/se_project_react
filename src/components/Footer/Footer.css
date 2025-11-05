@@ -1,0 +1,12 @@
+.footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 24px 0;
+}
+
+.footer__name,
+.footer__year {
+  font-family: "Cabinet Grotesk";
+  font-weight: 500;
+  margin: 0;
+}
