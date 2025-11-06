@@ -1,14 +1,7 @@
 import closeIcon from "../../assets/x.svg";
 import "./ModalWithForm.css";
 
-function ModalWithForm({
-  children,
-  title,
-  buttonText,
-  activeModal,
-  onClose,
-  isOpen,
-}) {
+function ModalWithForm({ children, title, buttonText, onClose, isOpen }) {
   return (
     <div onClick={onClose} className={`modal ${isOpen ? "modal__opened" : ""}`}>
       <div onClick={(e) => e.stopPropagation()} className="modal__content">

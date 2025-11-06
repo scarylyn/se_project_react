@@ -1,4 +1,5 @@
 .modal {
+  opacity: 0;
   font-family: "Cabinet Grotesk";
   font-weight: 700;
   position: fixed;
@@ -11,10 +12,11 @@
   justify-content: center;
   align-items: center;
   visibility: hidden;
-  transition: visibility 0s linear 0.5s, opacity 0.5s linear;
+  transition: visibility 0.3s, opacity 0.3s linear;
 }
 
 .modal__opened {
+  opacity: 1;
   visibility: visible;
 }
 

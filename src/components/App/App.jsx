@@ -35,7 +35,7 @@ function App() {
 
   const handleEscape = (evt) => {
     if (evt.key === "Escape") {
-      setActiveModal("");
+      closeActiveModal();
     }
   };
 
@@ -114,7 +114,7 @@ function App() {
               className="modal__radio-input"
               name="weather"
               value="hot"
-              disabled
+              required
             />
             Hot
           </label>
@@ -125,7 +125,7 @@ function App() {
               className="modal__radio-input"
               name="weather"
               value="warm"
-              disabled
+              required
             />
             Warm
           </label>
@@ -136,7 +136,7 @@ function App() {
               className="modal__radio-input"
               name="weather"
               value="cold"
-              disabled
+              required
             />
             Cold
           </label>
