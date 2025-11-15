@@ -1,0 +1,56 @@
+/*TODO - Make sure all stylings are according to figma!
+
+toggle switch has a hover state and some transition stuff that needs to be applied,
+looks like the circle gets a little bigger on hover and the outline is black.
+
+instructors hints include: 
+"you can use transform:translateX() which takes some type of variable in the ()"
+"there is also a property called mix-blend-mode: ... and some property goes there"*/
+
+.toggle-switch {
+  position: relative;
+  cursor: pointer;
+  width: 56px;
+  height: 28px;
+  border: 2px solid rgba(126, 126, 126, 1);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+/* .toggle-switch:hover {
+  border: rgba(0, 0, 0, 1);
+} */
+
+.toggle-switch__checkbox {
+  opacity: 0;
+}
+
+.toggle-switch__circle {
+  background-color: rgba(0, 0, 0, 1);
+  width: 28px;
+  height: 28px;
+  position: absolute;
+  border-radius: 20px;
+  left: 0;
+  transition: all 0.2s;
+}
+
+.toggle-switch__checkbox:checked ~ .toggle-switch__circle {
+  left: 28px;
+}
+
+.toggle-switch__text {
+  font-family: "Cabinet Grotesk";
+  font-weight: 700;
+  color: grey;
+  position: absolute;
+  top: 5px;
+}
+
+.toggle-switch__text_F {
+  left: 9px;
+}
+
+.toggle-switch__text_C {
+  right: 9px;
+}
