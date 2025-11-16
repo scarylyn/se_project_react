@@ -1,0 +1,5 @@
+.profile {
+  font-family: "Cabinet Grotesk";
+  display: flex;
+  justify-content: space-between;
+}
