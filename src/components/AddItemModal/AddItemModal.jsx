@@ -9,7 +9,7 @@ const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
 
   const defaultValues = {
     name: "",
-    link: "",
+    imageUrl: "",
     weatherType: "",
   };
   const { values, handleChange } = useForm(defaultValues);
@@ -40,11 +40,11 @@ const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
         <input
           required
           type="url"
-          name="link"
+          name="imageUrl"
           className="modal__input"
           id="imageUrl"
           placeholder="Image URL"
-          value={values.link}
+          value={values.imageUrl}
           onChange={handleChange}
         />
       </label>

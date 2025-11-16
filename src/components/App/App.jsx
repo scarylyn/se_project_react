@@ -8,9 +8,9 @@ import Profile from "../Profile/Profile.jsx";
 import AddItemModal from "../AddItemModal/AddItemModal.jsx";
 import ItemModal from "../ItemModal/ItemModal";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
-import { defaultClothingItems } from "../../utils/constants.js";
 import Footer from "../Footer/Footer";
 import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext.jsx";
+import { getItems, addItem, removeItem } from "../../utils/api.js";
 
 function App() {
   const [weatherData, setWeatherData] = useState({
@@ -22,7 +22,7 @@ function App() {
   });
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
-  const [clothingItems, setClothingItems] = useState(defaultClothingItems);
+  const [clothingItems, setClothingItems] = useState([]);
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
 
   const handleToggleSwitchChange = () => {
@@ -39,20 +39,27 @@ function App() {
   };
 
   const onAddItem = (inputValues) => {
-    // call the fetch function
-    // .then() includes all the stuff below
     const newCardData = {
       name: inputValues.name,
-      link: inputValues.link,
+      imageUrl: inputValues.imageUrl,
       weather: inputValues.weatherType,
     };
-    // don't use newCardData, it won't work, it won't have the id
-    // he says the database will create the id
-    // and will be included in the response data, you'll have access to it
-    // through res
-    setClothingItems([...clothingItems, newCardData]);
-    closeActiveModal();
-    // .catch()
+    addItem(newCardData)
+      .then((data) => {
+        setClothingItems([data, ...clothingItems]);
+        closeActiveModal();
+      })
+      .catch(console.error);
+  };
+
+  const deleteItemHandler = (data) => {
+    const filteredArr = clothingItems.filter((item) => {
+      return item._id != data._id;
+    });
+    removeItem(data._id).then(() => {
+      setClothingItems(filteredArr);
+      closeActiveModal();
+    });
   };
 
   const closeActiveModal = () => {
@@ -91,6 +98,12 @@ function App() {
           city: "Unknown Location",
         });
       });
+    getItems()
+      .then((data) => {
+        const reversedData = data.reverse();
+        setClothingItems(reversedData);
+      })
+      .catch(console.error);
   }, []);
 
   return (
@@ -134,6 +147,7 @@ function App() {
           card={selectedCard}
           onClose={closeActiveModal}
           isOpen={activeModal === "preview"}
+          onDelete={deleteItemHandler}
         />
       </div>
     </CurrentTemperatureUnitContext.Provider>

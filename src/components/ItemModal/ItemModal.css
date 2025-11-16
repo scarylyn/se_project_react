@@ -14,11 +14,13 @@
 }
 
 .modal__footer {
+  position: relative;
   flex-grow: 0;
   background-color: #fff;
 }
 
 .modal__caption {
+  max-width: 250px;
   font-size: 20px;
   font-weight: 700;
   margin: 20px 0 12px 0;
@@ -33,4 +35,17 @@
 .modal__close_preview {
   top: 24px;
   right: 24px;
+}
+
+.modal__button_delete {
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 700;
+  color: rgba(255, 77, 0, 1);
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  position: absolute;
+  top: 20px;
+  right: 1px;
 }
