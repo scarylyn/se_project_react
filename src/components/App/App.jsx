@@ -4,7 +4,7 @@ import "./App.css";
 import { coordinates, apiKey } from "../../utils/constants";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
-import ModalWithForm from "../ModalWithForm/ModalWithForm";
+import AddItemModal from "../AddItemModal/AddItemModal.jsx";
 import ItemModal from "../ItemModal/ItemModal";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import { defaultClothingItems } from "../../utils/constants.js";
@@ -13,9 +13,11 @@ import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnit
 
 function App() {
   const [weatherData, setWeatherData] = useState({
-    type: "default",
-    temp: { F: 999 },
     city: "Loading...",
+    temp: { F: 999, C: 999 },
+    type: "default",
+    condition: "clear",
+    isDay: true,
   });
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
@@ -33,6 +35,23 @@ function App() {
   const handleCardClick = (card) => {
     setActiveModal("preview");
     setSelectedCard(card);
+  };
+
+  const onAddItem = (inputValues) => {
+    // call the fetch function
+    // .then() includes all the stuff below
+    const newCardData = {
+      name: inputValues.name,
+      link: inputValues.link,
+      weather: inputValues.weatherType,
+    };
+    // don't use newCardData, it won't work, it won't have the id
+    // he says the database will create the id
+    // and will be included in the response data, you'll have access to it
+    // through res
+    setClothingItems([...clothingItems, newCardData]);
+    closeActiveModal();
+    // .catch()
   };
 
   const closeActiveModal = () => {
@@ -87,74 +106,17 @@ function App() {
           />
           <Footer />
         </div>
-        <ModalWithForm
-          title="New Garment"
-          buttonText="Add garment"
+        <AddItemModal
           activeModal={activeModal}
           onClose={closeActiveModal}
           isOpen={activeModal === "add-garment"}
-        >
-          <label htmlFor="name" className="modal__label">
-            Name{" "}
-            <input
-              required
-              type="text"
-              className="modal__input"
-              id="name"
-              placeholder="Name"
-            />
-          </label>
-          <label htmlFor="imageUrl" className="modal__label">
-            Image{" "}
-            <input
-              required
-              type="url"
-              className="modal__input"
-              id="imageUrl"
-              placeholder="Image URL"
-            />
-          </label>
-          <fieldset className="modal__radio-buttons">
-            <legend className="modal__legend">Select the weather type:</legend>
-            <label htmlFor="hot" className="modal__label_type_radio">
-              <input
-                id="hot"
-                type="radio"
-                className="modal__radio-input"
-                name="weather"
-                value="hot"
-                required
-              />
-              Hot
-            </label>
-            <label htmlFor="warm" className="modal__label_type_radio">
-              <input
-                id="warm"
-                type="radio"
-                className="modal__radio-input"
-                name="weather"
-                value="warm"
-                required
-              />
-              Warm
-            </label>
-            <label htmlFor="cold" className="modal__label_type_radio">
-              <input
-                id="cold"
-                type="radio"
-                className="modal__radio-input"
-                name="weather"
-                value="cold"
-                required
-              />
-              Cold
-            </label>
-          </fieldset>
-        </ModalWithForm>
+          onAddItem={onAddItem}
+        />
         <ItemModal
           activeModal={activeModal}
           card={selectedCard}
           onClose={closeActiveModal}
+          isOpen={activeModal === "preview"}
         />
       </div>
     </CurrentTemperatureUnitContext.Provider>

@@ -2,6 +2,8 @@ import "./Main.css";
 import WeatherCard from "../WeatherCard/WeatherCard";
 import ItemCard from "../ItemCard/ItemCard";
 
+/*TODO - Set up temp change on button toggle, very similar to how it was done in WeatherCard*/
+
 function Main({ weatherData, handleCardClick, clothingItems }) {
   return (
     <main>

@@ -1,7 +1,15 @@
 import closeIcon from "../../assets/x.svg";
 import "./ModalWithForm.css";
 
-function ModalWithForm({ children, title, buttonText, onClose, isOpen }) {
+function ModalWithForm({
+  children,
+  title,
+  name,
+  buttonText = "Save",
+  onClose,
+  isOpen,
+  onSubmit,
+}) {
   return (
     <div onClick={onClose} className={`modal ${isOpen ? "modal__opened" : ""}`}>
       <div onClick={(e) => e.stopPropagation()} className="modal__content">
@@ -9,7 +17,7 @@ function ModalWithForm({ children, title, buttonText, onClose, isOpen }) {
         <button type="button" className="modal__close">
           <img onClick={onClose} src={closeIcon} alt="close icon" />
         </button>
-        <form className="modal__form">
+        <form onSubmit={onSubmit} className="modal__form" name={name}>
           {children}
           <button type="submit" className="modal__submit">
             {buttonText}

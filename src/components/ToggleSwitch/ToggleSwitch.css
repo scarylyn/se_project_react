@@ -8,6 +8,7 @@ instructors hints include:
 "there is also a property called mix-blend-mode: ... and some property goes there"*/
 
 .toggle-switch {
+  margin: 0 20px 0 auto;
   position: relative;
   cursor: pointer;
   width: 56px;
