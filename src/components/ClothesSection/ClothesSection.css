@@ -25,6 +25,7 @@
 }
 
 .clothes-section__button {
+  cursor: pointer;
   font-weight: 700;
   font-size: 20px;
   margin: 0 20px 0 0;

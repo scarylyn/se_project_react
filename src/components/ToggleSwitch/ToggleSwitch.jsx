@@ -13,7 +13,7 @@ export default function ToggleSwitch() {
         onChange={handleToggleSwitchChange}
         type="checkbox"
         className="toggle-switch__checkbox"
-      ></input>
+      />
       <span className="toggle-switch__circle"></span>
       <span
         style={{ color: `${currentTemperatureUnit === "F" ? "white" : ""}` }}

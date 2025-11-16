@@ -53,13 +53,15 @@ function App() {
   };
 
   const deleteItemHandler = (data) => {
-    const filteredArr = clothingItems.filter((item) => {
+    const filteredArray = clothingItems.filter((item) => {
       return item._id != data._id;
     });
-    removeItem(data._id).then(() => {
-      setClothingItems(filteredArr);
-      closeActiveModal();
-    });
+    removeItem(data._id)
+      .then(() => {
+        setClothingItems(filteredArray);
+        closeActiveModal();
+      })
+      .catch(console.error);
   };
 
   const closeActiveModal = () => {
@@ -93,9 +95,11 @@ function App() {
       .catch((error) => {
         console.error("Weather API failed:", error);
         setWeatherData({
-          type: "clouds",
-          temp: { F: 65 },
+          type: "cold",
+          temp: { F: 32, C: 0 },
           city: "Unknown Location",
+          condition: "snow",
+          isDay: true,
         });
       });
     getItems()
@@ -130,6 +134,7 @@ function App() {
                 <Profile
                   onCardClick={handleCardClick}
                   clothingItems={clothingItems}
+                  onAddClick={handleAddClick}
                 />
               }
             />
