@@ -54,7 +54,7 @@ function App() {
 
   const deleteItemHandler = (data) => {
     const filteredArray = clothingItems.filter((item) => {
-      return item._id != data._id;
+      return item._id !== data._id;
     });
     removeItem(data._id)
       .then(() => {

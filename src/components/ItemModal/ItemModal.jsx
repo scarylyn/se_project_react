@@ -1,16 +1,13 @@
 import "./ItemModal.css";
 import closeIcon from "../../assets/x.svg";
 
-function ItemModal({ activeModal, onClose, card, onDelete }) {
+function ItemModal({ isOpen, onClose, card, onDelete }) {
   const deleteItem = () => {
     onDelete(card);
   };
 
   return (
-    <div
-      onClick={onClose}
-      className={`modal ${activeModal === "preview" && "modal__opened"}`}
-    >
+    <div onClick={onClose} className={`modal ${isOpen ? "modal__opened" : ""}`}>
       <div
         onClick={(e) => e.stopPropagation()}
         className="modal__content modal__content_type_image"

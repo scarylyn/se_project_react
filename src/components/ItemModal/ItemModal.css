@@ -10,7 +10,7 @@
   align-self: center;
   margin-top: -28px;
   width: 115%;
-  height: auto;
+  max-height: 506px;
 }
 
 .modal__footer {
