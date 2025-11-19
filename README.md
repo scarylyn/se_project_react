@@ -4,6 +4,7 @@ Just like it says up there, this is an app that will give you an idea of what to
 
 You can test it out [right here.](https://scarylyn.github.io/se_project_react/)
 <img src="/src/assets/WTWR-sample-image.png"/>
+I also made a demo video, check it out [here!](https://drive.google.com/file/d/1xZjfkyo9YDKrVmmcYue0u9_Lfbp7Yuoe/view?usp=sharing)
 
 ## React + Vite
 
