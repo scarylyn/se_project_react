@@ -1,39 +1,52 @@
 import "./ItemModal.css";
 import closeIcon from "../../assets/x.svg";
+import { useContext } from "react";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-function ItemModal({ isOpen, onClose, card, onDelete }) {
+function ItemModal({ isOpen, onClose, card, onDelete, isLoggedIn }) {
+  const currentUser = useContext(CurrentUserContext);
+  const isOwn = card.owner === currentUser._id;
   const deleteItem = () => {
     onDelete(card);
   };
 
-  return (
-    <div onClick={onClose} className={`modal ${isOpen ? "modal__opened" : ""}`}>
+  if (isLoggedIn) {
+    return (
       <div
-        onClick={(e) => e.stopPropagation()}
-        className="modal__content modal__content_type_image"
+        onClick={onClose}
+        className={`modal ${isOpen ? "modal__opened" : ""}`}
       >
-        <button
-          onClick={onClose}
-          type="button"
-          className="modal__close modal__close_preview"
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="modal__content modal__content_type_image"
         >
-          <img src={closeIcon} alt="close icon" />
-        </button>
-        <img src={card.imageUrl} alt={card.name} className="modal__image" />
-        <div className="modal__footer">
-          <h2 className="modal__caption">{card.name}</h2>
-          <p className="modal__weather">Weather: {card.weather}</p>
           <button
-            onClick={deleteItem}
+            onClick={onClose}
             type="button"
-            className="modal__button_delete"
+            className="modal__close modal__close_preview"
           >
-            Delete Item
+            <img src={closeIcon} alt="close icon" />
           </button>
+          <img src={card.imageUrl} alt={card.name} className="modal__image" />
+          <div className="modal__footer">
+            <h2 className="modal__caption">{card.name}</h2>
+            <p className="modal__weather">Weather: {card.weather}</p>
+            {isOwn && (
+              <button
+                onClick={deleteItem}
+                type="button"
+                className="modal__button_delete"
+              >
+                Delete Item
+              </button>
+            )}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    console.log("no user detected in ItemModal");
+  }
 }
 
 export default ItemModal;

@@ -16,14 +16,7 @@ const LoginModal = ({ isOpen, onClose }) => {
     }));
   };
 
-  const {
-    values,
-    resetForm,
-    errors,
-    isValid,
-    isSubmitted,
-    handleSubmit: handleValidationSubmit,
-  } = useFormWithValidation(defaultValues);
+  const { resetForm, errors, isValid, isSubmitted } = useFormWithValidation();
 
   function handleSubmit(evt) {
     evt.preventDefault();
@@ -53,7 +46,7 @@ const LoginModal = ({ isOpen, onClose }) => {
           }`}
           id="email"
           placeholder="Email"
-          value={values.email}
+          value={data.email}
           onChange={handleChange}
           autoComplete="off"
         />
@@ -73,7 +66,7 @@ const LoginModal = ({ isOpen, onClose }) => {
           }`}
           id="password"
           placeholder="Password"
-          value={values.password}
+          value={data.password}
           onChange={handleChange}
           autoComplete="off"
         />

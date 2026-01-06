@@ -10,9 +10,12 @@ export const handleServerResponse = (res) => {
 };
 
 export const addItem = ({ name, imageUrl, weather }) => {
+  const token = localStorage.getItem("jwt");
   return fetch(`${baseUrl}/items`, {
     method: "POST",
-    headers,
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
     body: JSON.stringify({
       name,
       imageUrl,
@@ -22,8 +25,11 @@ export const addItem = ({ name, imageUrl, weather }) => {
 };
 
 export const removeItem = (itemID) => {
+  const token = localStorage.getItem("jwt");
   return fetch(`${baseUrl}/items/${itemID}`, {
     method: "DELETE",
-    headers,
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
   }).then(handleServerResponse);
 };

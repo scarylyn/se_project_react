@@ -18,10 +18,12 @@ import { coordinates, apiKey } from "../../utils/constants";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import { getItems, addItem, removeItem } from "../../utils/api.js";
 import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext.jsx";
+import CurrentUserContext from "../../contexts/CurrentUserContext.jsx";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.jsx";
+import * as auth from "../../utils/auth.js";
 
 function App() {
-  const [userData, setUserData] = useState({ email: "", password: "" });
+  const [userData, setUserData] = useState({ name: "", password: "" });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [weatherData, setWeatherData] = useState({
     city: "Loading...",
@@ -96,6 +98,10 @@ function App() {
       .catch(console.error);
   };
 
+  const openRegistrationModal = () => {
+    setActiveModal("register");
+  };
+
   const handleSignIn = ({ email, password }) => {
     if (!email || !password) {
       return;
@@ -104,7 +110,7 @@ function App() {
     auth
       .login(email, password)
       .then((res) => {
-        setUserData(data.user);
+        setUserData(res.user);
         setIsLoggedIn(true);
         localStorage.setItem("jwt", res.token);
         navigate("/");
@@ -112,6 +118,28 @@ function App() {
       })
       .catch(console.error);
   };
+
+  const openSignInModal = () => {
+    setActiveModal("signin");
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("jwt");
+    if (!token) {
+      return;
+    }
+
+    auth
+      .checkTokenValidity()
+      .then((res) => {
+        setUserData(res.user);
+        setIsLoggedIn(true);
+      })
+      .catch((error) => {
+        setIsLoggedIn(false);
+        console.error(error);
+      });
+  }, []);
 
   useEffect(() => {
     if (activeModal) {
@@ -204,86 +232,85 @@ function App() {
   }, []);
 
   return (
-    <CurrentTemperatureUnitContext.Provider
-      value={{ currentTemperatureUnit, handleToggleSwitchChange }}
-    >
-      <div className="page">
-        <div className="page__content">
-          <Header handleAddClick={handleAddClick} weatherData={weatherData} />
-          <Routes>
-            <Route
-              path="*"
-              element={
-                isLoggedIn ? (
-                  <Navigate to="/profile" replace />
-                ) : (
-                  <Navigate to="/" replace />
-                )
-              }
+    <CurrentUserContext.Provider value={userData}>
+      <CurrentTemperatureUnitContext.Provider
+        value={{ currentTemperatureUnit, handleToggleSwitchChange }}
+      >
+        <div className="page">
+          <div className="page__content">
+            <Header
+              onAddClick={handleAddClick}
+              weatherData={weatherData}
+              isLoggedIn={isLoggedIn}
+              openRegistrationModal={openRegistrationModal}
+              openSignInModal={openSignInModal}
             />
-            <Route
-              path="/"
-              element={
-                <Main
-                  weatherData={weatherData}
-                  handleCardClick={handleCardClick}
-                  clothingItems={clothingItems}
-                />
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                <ProtectedRoute isLoggedIn={isLoggedIn}>
-                  <Profile
-                    userData={userData} // need to set up the header to toggle display of name/log in
-                    onCardClick={handleCardClick}
+            <Routes>
+              <Route
+                path="*"
+                element={
+                  isLoggedIn ? (
+                    <Navigate to="/profile" replace />
+                  ) : (
+                    <Navigate to="/" replace />
+                  )
+                }
+              />
+              <Route
+                path="/"
+                element={
+                  <Main
+                    weatherData={weatherData}
+                    handleCardClick={handleCardClick}
                     clothingItems={clothingItems}
-                    onAddClick={handleAddClick}
                   />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/signup"
-              element={
-                <RegisterModal
-                  activeModal={activeModal}
-                  handleRegistration={handleRegistration}
-                  onClose={closeActiveModal}
-                  isOpen={activeModal === "register"}
-                />
-              }
-            />
-            <Route
-              path="/signin"
-              element={
-                <LoginModal
-                  activeModal={activeModal}
-                  handleSignIn={handleSignIn}
-                  onClose={closeActiveModal}
-                  isOpen={activeModal === "signin"}
-                />
-              }
-            />
-          </Routes>
-          <Footer />
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute isLoggedIn={isLoggedIn}>
+                    <Profile
+                      userData={userData} // need to set up the header to toggle display of name/log in
+                      onCardClick={handleCardClick}
+                      clothingItems={clothingItems}
+                      onAddClick={handleAddClick}
+                    />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+            <Footer />
+          </div>
+          <RegisterModal
+            activeModal={activeModal}
+            handleRegistration={handleRegistration}
+            onClose={closeActiveModal}
+            isOpen={activeModal === "register"}
+          />
+          <LoginModal
+            activeModal={activeModal}
+            handleSignIn={handleSignIn}
+            onClose={closeActiveModal}
+            isOpen={activeModal === "signin"}
+          />
+          <AddItemModal
+            activeModal={activeModal}
+            onClose={closeActiveModal}
+            isOpen={activeModal === "add-garment"}
+            onAddItem={onAddItem}
+          />
+          <ItemModal
+            isLoggedIn={isLoggedIn}
+            activeModal={activeModal}
+            card={selectedCard}
+            onClose={closeActiveModal}
+            isOpen={activeModal === "preview"}
+            onDelete={deleteItemHandler}
+          />
         </div>
-        <AddItemModal
-          activeModal={activeModal}
-          onClose={closeActiveModal}
-          isOpen={activeModal === "add-garment"}
-          onAddItem={onAddItem}
-        />
-        <ItemModal
-          activeModal={activeModal}
-          card={selectedCard}
-          onClose={closeActiveModal}
-          isOpen={activeModal === "preview"}
-          onDelete={deleteItemHandler}
-        />
-      </div>
-    </CurrentTemperatureUnitContext.Provider>
+      </CurrentTemperatureUnitContext.Provider>
+    </CurrentUserContext.Provider>
   );
 }
 

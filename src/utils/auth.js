@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+const baseUrl = "http://localhost:3000";
 
 export const register = (name, avatar, password, email) => {
   return fetch(`${baseUrl}/signup`, {
@@ -24,15 +24,8 @@ export const login = (email, password) => {
   });
 };
 
-useEffect(() => {
+export const checkTokenValidity = () => {
   const token = localStorage.getItem("jwt");
-
-  if (token) {
-    checkTokenValidity(token);
-  } else {
-    return;
-  }
-
   return fetch(`${baseUrl}/users/me`, {
     method: "GET",
     headers: {
@@ -42,4 +35,4 @@ useEffect(() => {
   }).then((res) => {
     return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
   });
-}, []);
+};

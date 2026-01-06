@@ -2,7 +2,7 @@ import { useState } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import { useFormWithValidation } from "../../hooks/useFormWithValidation";
 
-const RegisterModal = ({ handleRegistration }) => {
+const RegisterModal = ({ handleRegistration, isOpen, onClose }) => {
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -18,14 +18,7 @@ const RegisterModal = ({ handleRegistration }) => {
     }));
   };
 
-  const {
-    values,
-    resetForm,
-    errors,
-    isValid,
-    isSubmitted,
-    handleSubmit: handleValidationSubmit,
-  } = useFormWithValidation(defaultValues);
+  const { resetForm, errors, isValid, isSubmitted } = useFormWithValidation();
 
   function handleSubmit(evt) {
     evt.preventDefault();
@@ -44,6 +37,7 @@ const RegisterModal = ({ handleRegistration }) => {
       onClose={onClose}
       onSubmit={handleSubmit}
       isDisabled={!isValid}
+      className={`modal ${isOpen ? "modal__opened" : ""}`}
     >
       <label htmlFor="email" className="modal__label">
         Email*{" "}
@@ -55,7 +49,7 @@ const RegisterModal = ({ handleRegistration }) => {
           }`}
           id="email"
           placeholder="Email"
-          value={values.email}
+          value={data.email}
           onChange={handleChange}
           autoComplete="off"
         />
@@ -75,7 +69,7 @@ const RegisterModal = ({ handleRegistration }) => {
           }`}
           id="password"
           placeholder="Password"
-          value={values.password}
+          value={data.password}
           onChange={handleChange}
           autoComplete="off"
         />
@@ -94,7 +88,7 @@ const RegisterModal = ({ handleRegistration }) => {
           }`}
           id="name"
           placeholder="Name"
-          value={values.name}
+          value={data.name}
           onChange={handleChange}
           autoComplete="off"
         />
@@ -113,7 +107,7 @@ const RegisterModal = ({ handleRegistration }) => {
           }`}
           id="imageUrl"
           placeholder="Avatar URL"
-          value={values.imageUrl}
+          value={data.imageUrl}
           onChange={handleChange}
           autoComplete="off"
         />
