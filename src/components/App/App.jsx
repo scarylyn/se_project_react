@@ -7,6 +7,8 @@ import "./App.css";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Profile from "../Profile/Profile.jsx";
+import RegisterModal from "../RegisterModal/RegisterModal.jsx";
+import LoginModal from "../LoginModal/LoginModal.jsx";
 import AddItemModal from "../AddItemModal/AddItemModal.jsx";
 import ItemModal from "../ItemModal/ItemModal";
 import Footer from "../Footer/Footer";
@@ -92,21 +94,75 @@ function App() {
   }, [activeModal]);
 
   useEffect(() => {
-    getWeather(coordinates, apiKey)
-      .then((data) => {
-        const filteredData = filterWeatherData(data);
-        setWeatherData(filteredData);
-      })
-      .catch((error) => {
-        console.error("Weather API failed:", error);
-        setWeatherData({
-          type: "cold",
-          temp: { F: 32, C: 0 },
-          city: "Unknown Location",
-          condition: "snow",
-          isDay: true,
-        });
-      });
+    function fetchWeatherWithGeo() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const userCoords = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            };
+            getWeather(userCoords, apiKey)
+              .then((data) => {
+                const filteredData = filterWeatherData(data);
+                setWeatherData(filteredData);
+              })
+              .catch((error) => {
+                console.error("Weather API failed:", error);
+                setWeatherData({
+                  type: "cold",
+                  temp: { F: 32, C: 0 },
+                  city: "Unknown Location",
+                  condition: "snow",
+                  isDay: true,
+                });
+              });
+          },
+          (error) => {
+            // Fallback to default coordinates if denied or error
+            console.warn(
+              "Geolocation error, using default coordinates:",
+              error
+            );
+            getWeather(coordinates, apiKey)
+              .then((data) => {
+                const filteredData = filterWeatherData(data);
+                setWeatherData(filteredData);
+              })
+              .catch((error) => {
+                console.error("Weather API failed:", error);
+                setWeatherData({
+                  type: "cold",
+                  temp: { F: 32, C: 0 },
+                  city: "Unknown Location",
+                  condition: "snow",
+                  isDay: true,
+                });
+              });
+          }
+        );
+      } else {
+        // Geolocation not supported
+        getWeather(coordinates, apiKey)
+          .then((data) => {
+            const filteredData = filterWeatherData(data);
+            setWeatherData(filteredData);
+          })
+          .catch((error) => {
+            console.error("Weather API failed:", error);
+            setWeatherData({
+              type: "cold",
+              temp: { F: 32, C: 0 },
+              city: "Unknown Location",
+              condition: "snow",
+              isDay: true,
+            });
+          });
+      }
+    }
+
+    fetchWeatherWithGeo();
+
     getItems()
       .then((data) => {
         const reversedData = data.reverse();
@@ -146,6 +202,16 @@ function App() {
           </Routes>
           <Footer />
         </div>
+        <RegisterModal
+          activeModal={activeModal}
+          onClose={closeActiveModal}
+          isOpen={activeModal === "register"}
+        />
+        <LoginModal
+          activeModal={activeModal}
+          onClose={closeActiveModal}
+          isOpen={activeModal === "login"}
+        />
         <AddItemModal
           activeModal={activeModal}
           onClose={closeActiveModal}

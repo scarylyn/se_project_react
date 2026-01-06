@@ -67,6 +67,10 @@
   border-bottom: 1px solid rgba(0, 0, 0, 1);
 }
 
+.modal__input_invalid {
+  border-bottom: 2px solid #e74c3c;
+}
+
 .modal__radio-buttons {
   border: none;
   padding: 0;
@@ -78,6 +82,10 @@
 
 .modal__radio-input {
   margin-right: 8px;
+}
+
+.modal__radio-input.modal__input_invalid {
+  outline: 2px solid #e74c3c;
 }
 
 .modal__radio-buttons:disabled {
@@ -104,4 +112,17 @@
 
 .modal__submit:disabled {
   background: rgba(0, 0, 0, 0.3);
+}
+
+.modal__error {
+  display: block;
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 4px;
+  min-height: 16px;
+  visibility: hidden;
+}
+
+.modal__error_visible {
+  visibility: visible;
 }
