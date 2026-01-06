@@ -46,7 +46,6 @@ function ItemModal({ isOpen, onClose, card, onDelete, isLoggedIn }) {
       </div>
     );
   } else {
-    console.log("no user detected in ItemModal");
     return;
   }
 }

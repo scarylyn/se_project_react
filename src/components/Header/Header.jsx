@@ -28,15 +28,13 @@ function Header({
         {currentDate}, {weatherData.city}
       </p>
       <ToggleSwitch />
-      <NavLink className="header__nav-link" to="/profile">
-        <UserAvatar
-          value={currentUser}
-          isLoggedIn={isLoggedIn}
-          handleAddClick={handleAddClick}
-          openRegistrationModal={openRegistrationModal}
-          openSignInModal={openSignInModal}
-        />
-      </NavLink>
+      <UserAvatar
+        value={currentUser}
+        isLoggedIn={isLoggedIn}
+        handleAddClick={handleAddClick}
+        openRegistrationModal={openRegistrationModal}
+        openSignInModal={openSignInModal}
+      />
     </header>
   );
 }

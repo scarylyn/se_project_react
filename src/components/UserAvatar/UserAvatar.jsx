@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 function UserAvatar({
   value,
   handleAddClick,
@@ -10,7 +12,7 @@ function UserAvatar({
 
     return (
       <div className="header__user-container">
-        {/* handleAddClick doesn't work right now */}
+        {/* TODO - fix handleAddClick */}
         <button
           type="button"
           onClick={handleAddClick}
@@ -18,20 +20,23 @@ function UserAvatar({
         >
           + Add Clothes
         </button>
-        <p className="header__username">{value.name}</p>
-        {value.avatar ? (
-          <img src={value.avatar} alt={value.name} className="header__avatar" />
-        ) : (
-          <div className="header__avatar-placeholder">{firstLetter}</div>
-        )}
+        <NavLink className="header__nav-link" to="/profile">
+          <p className="header__username">{value.name}</p>
+          {value.avatar ? (
+            <img
+              src={value.avatar}
+              alt={value.name}
+              className="header__avatar"
+            />
+          ) : (
+            <div className="header__avatar-placeholder">{firstLetter}</div>
+          )}
+        </NavLink>
       </div>
     );
   } else {
-    console.log("no user detected in UserAvatar");
-
     return (
       <div className="header__user-container">
-        {/* TODO make these buttons function, adjust classNames */}
         <button
           className="header__add-clothes-btn"
           onClick={openRegistrationModal}
