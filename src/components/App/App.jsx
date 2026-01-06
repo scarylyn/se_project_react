@@ -23,7 +23,10 @@ import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.jsx";
 import * as auth from "../../utils/auth.js";
 
 function App() {
-  const [userData, setUserData] = useState({ name: "", password: "" });
+  const [userData, setUserData] = useState({
+    name: "default",
+    password: "default",
+  });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [weatherData, setWeatherData] = useState({
     city: "Loading...",
@@ -95,7 +98,10 @@ function App() {
         closeActiveModal();
         handleSignIn({ email, password });
       })
-      .catch(console.error);
+      .catch((error) => {
+        console.error(error);
+        return;
+      });
   };
 
   const openRegistrationModal = () => {
@@ -242,6 +248,7 @@ function App() {
               onAddClick={handleAddClick}
               weatherData={weatherData}
               isLoggedIn={isLoggedIn}
+              value={userData}
               openRegistrationModal={openRegistrationModal}
               openSignInModal={openSignInModal}
             />
@@ -271,7 +278,7 @@ function App() {
                 element={
                   <ProtectedRoute isLoggedIn={isLoggedIn}>
                     <Profile
-                      userData={userData} // need to set up the header to toggle display of name/log in
+                      userData={userData}
                       onCardClick={handleCardClick}
                       clothingItems={clothingItems}
                       onAddClick={handleAddClick}

@@ -2,7 +2,7 @@ import { useState } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import { useFormWithValidation } from "../../hooks/useFormWithValidation";
 
-const LoginModal = ({ isOpen, onClose }) => {
+const LoginModal = ({ handleSignIn, isOpen, onClose }) => {
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -21,8 +21,6 @@ const LoginModal = ({ isOpen, onClose }) => {
   function handleSubmit(evt) {
     evt.preventDefault();
     handleSignIn(data);
-    const valid = handleValidationSubmit();
-    if (!valid) return;
     resetForm();
     onClose();
   }

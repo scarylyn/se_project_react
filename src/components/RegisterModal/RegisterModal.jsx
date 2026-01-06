@@ -7,7 +7,7 @@ const RegisterModal = ({ handleRegistration, isOpen, onClose }) => {
     email: "",
     password: "",
     name: "",
-    imageUrl: "",
+    avatar: "",
   });
 
   const handleChange = (e) => {
@@ -23,8 +23,6 @@ const RegisterModal = ({ handleRegistration, isOpen, onClose }) => {
   function handleSubmit(evt) {
     evt.preventDefault();
     handleRegistration(data);
-    const valid = handleValidationSubmit();
-    if (!valid) return;
     resetForm();
     onClose();
   }
@@ -101,13 +99,13 @@ const RegisterModal = ({ handleRegistration, isOpen, onClose }) => {
       <label htmlFor="imageUrl" className="modal__label">
         Avatar URL*{" "}
         <input
-          name="imageUrl"
+          name="avatar"
           className={`modal__input${
             isSubmitted && errors.imageUrl ? " modal__input_invalid" : ""
           }`}
-          id="imageUrl"
+          id="avatar"
           placeholder="Avatar URL"
-          value={data.imageUrl}
+          value={data.avatar}
           onChange={handleChange}
           autoComplete="off"
         />

@@ -30,9 +30,9 @@ function Header({
       <ToggleSwitch />
       <NavLink className="header__nav-link" to="/profile">
         <UserAvatar
-          user={currentUser}
+          value={currentUser}
           isLoggedIn={isLoggedIn}
-          onAddClick={handleAddClick}
+          handleAddClick={handleAddClick}
           openRegistrationModal={openRegistrationModal}
           openSignInModal={openSignInModal}
         />

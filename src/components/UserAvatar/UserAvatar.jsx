@@ -1,12 +1,12 @@
 function UserAvatar({
-  user,
+  value,
   handleAddClick,
   isLoggedIn,
   openRegistrationModal,
   openSignInModal,
 }) {
-  if (isLoggedIn) {
-    const firstLetter = user.name.charAt(0).toUpperCase();
+  if (isLoggedIn && value && value._id) {
+    const firstLetter = value.name.charAt(0).toUpperCase();
 
     return (
       <div className="header__user-container">
@@ -18,9 +18,9 @@ function UserAvatar({
         >
           + Add Clothes
         </button>
-        <p className="header__username">{user.name}</p>
-        {user.avatar ? (
-          <img src={user.avatar} alt={user.name} className="header__avatar" />
+        <p className="header__username">{value.name}</p>
+        {value.avatar ? (
+          <img src={value.avatar} alt={value.name} className="header__avatar" />
         ) : (
           <div className="header__avatar-placeholder">{firstLetter}</div>
         )}

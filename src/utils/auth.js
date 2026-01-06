@@ -1,12 +1,12 @@
-const baseUrl = "http://localhost:3000";
+const baseUrl = "http://localhost:3001";
 
-export const register = (name, avatar, password, email) => {
+export const register = (email, password, name, avatar) => {
   return fetch(`${baseUrl}/signup`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ name, avatar, password, email }),
+    body: JSON.stringify({ email, password, name, avatar }),
   }).then((res) => {
     return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
   });

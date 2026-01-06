@@ -5,12 +5,13 @@ import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 function ItemModal({ isOpen, onClose, card, onDelete, isLoggedIn }) {
   const currentUser = useContext(CurrentUserContext);
-  const isOwn = card.owner === currentUser._id;
-  const deleteItem = () => {
-    onDelete(card);
-  };
 
-  if (isLoggedIn) {
+  if (isLoggedIn && currentUser && currentUser._id) {
+    const isOwn = card.owner === currentUser._id;
+    const deleteItem = () => {
+      onDelete(card);
+    };
+
     return (
       <div
         onClick={onClose}
@@ -46,6 +47,7 @@ function ItemModal({ isOpen, onClose, card, onDelete, isLoggedIn }) {
     );
   } else {
     console.log("no user detected in ItemModal");
+    return;
   }
 }
 
