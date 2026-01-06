@@ -1,23 +1,25 @@
+import { useState } from "react";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import { useFormWithValidation } from "../../hooks/useFormWithValidation";
 
-// create a component for user registration
-// brief says to use AddItemModal as a guide
-// pay attention to type attributes!
-// email and password inputs should have type="email" and "password" respectively
-// after the modal itself is built we'll work on the requests portion
-
-const RegisterModal = ({ isOpen, onClose }) => {
-  const defaultValues = {
+const RegisterModal = ({ handleRegistration }) => {
+  const [data, setData] = useState({
     email: "",
     password: "",
     name: "",
     imageUrl: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   const {
     values,
-    handleChange,
     resetForm,
     errors,
     isValid,
@@ -27,6 +29,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
 
   function handleSubmit(evt) {
     evt.preventDefault();
+    handleRegistration(data);
     const valid = handleValidationSubmit();
     if (!valid) return;
     resetForm();

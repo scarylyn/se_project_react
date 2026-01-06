@@ -1,15 +1,15 @@
 // React Imports
 import { useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 
 // Components
 import "./App.css";
 import Header from "../Header/Header";
 import Main from "../Main/Main";
-import Profile from "../Profile/Profile.jsx";
-import RegisterModal from "../RegisterModal/RegisterModal.jsx";
-import LoginModal from "../LoginModal/LoginModal.jsx";
-import AddItemModal from "../AddItemModal/AddItemModal.jsx";
+import Profile from "../Profile/Profile";
+import RegisterModal from "../RegisterModal/RegisterModal";
+import LoginModal from "../LoginModal/LoginModal";
+import AddItemModal from "../AddItemModal/AddItemModal";
 import ItemModal from "../ItemModal/ItemModal";
 import Footer from "../Footer/Footer";
 
@@ -18,8 +18,11 @@ import { coordinates, apiKey } from "../../utils/constants";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import { getItems, addItem, removeItem } from "../../utils/api.js";
 import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext.jsx";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.jsx";
 
 function App() {
+  const [userData, setUserData] = useState({ email: "", password: "" });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [weatherData, setWeatherData] = useState({
     city: "Loading...",
     temp: { F: 999, C: 999 },
@@ -79,6 +82,35 @@ function App() {
     if (evt.key === "Escape") {
       closeActiveModal();
     }
+  };
+
+  const navigate = useNavigate();
+
+  const handleRegistration = ({ email, password, name, avatar }) => {
+    auth
+      .register(email, password, name, avatar)
+      .then(() => {
+        closeActiveModal();
+        handleSignIn({ email, password });
+      })
+      .catch(console.error);
+  };
+
+  const handleSignIn = ({ email, password }) => {
+    if (!email || !password) {
+      return;
+    }
+
+    auth
+      .login(email, password)
+      .then((res) => {
+        setUserData(data.user);
+        setIsLoggedIn(true);
+        localStorage.setItem("jwt", res.token);
+        navigate("/");
+        closeActiveModal();
+      })
+      .catch(console.error);
   };
 
   useEffect(() => {
@@ -180,6 +212,16 @@ function App() {
           <Header handleAddClick={handleAddClick} weatherData={weatherData} />
           <Routes>
             <Route
+              path="*"
+              element={
+                isLoggedIn ? (
+                  <Navigate to="/profile" replace />
+                ) : (
+                  <Navigate to="/" replace />
+                )
+              }
+            />
+            <Route
               path="/"
               element={
                 <Main
@@ -192,26 +234,41 @@ function App() {
             <Route
               path="/profile"
               element={
-                <Profile
-                  onCardClick={handleCardClick}
-                  clothingItems={clothingItems}
-                  onAddClick={handleAddClick}
+                <ProtectedRoute isLoggedIn={isLoggedIn}>
+                  <Profile
+                    userData={userData} // need to set up the header to toggle display of name/log in
+                    onCardClick={handleCardClick}
+                    clothingItems={clothingItems}
+                    onAddClick={handleAddClick}
+                  />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/signup"
+              element={
+                <RegisterModal
+                  activeModal={activeModal}
+                  handleRegistration={handleRegistration}
+                  onClose={closeActiveModal}
+                  isOpen={activeModal === "register"}
+                />
+              }
+            />
+            <Route
+              path="/signin"
+              element={
+                <LoginModal
+                  activeModal={activeModal}
+                  handleSignIn={handleSignIn}
+                  onClose={closeActiveModal}
+                  isOpen={activeModal === "signin"}
                 />
               }
             />
           </Routes>
           <Footer />
         </div>
-        <RegisterModal
-          activeModal={activeModal}
-          onClose={closeActiveModal}
-          isOpen={activeModal === "register"}
-        />
-        <LoginModal
-          activeModal={activeModal}
-          onClose={closeActiveModal}
-          isOpen={activeModal === "login"}
-        />
         <AddItemModal
           activeModal={activeModal}
           onClose={closeActiveModal}
