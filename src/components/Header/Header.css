@@ -42,3 +42,10 @@
   text-decoration: none;
   color: black;
 }
+
+.header__avatar {
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}

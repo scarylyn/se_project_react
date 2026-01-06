@@ -19,3 +19,23 @@
   object-fit: cover;
   display: block;
 }
+
+.sidebar__edit-profile {
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+}
+
+.sidebar__logout {
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+}
+
+.sidebar__options {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding-top: 24px;
+  gap: 8px;
+}

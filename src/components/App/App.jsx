@@ -21,6 +21,7 @@ import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnit
 import CurrentUserContext from "../../contexts/CurrentUserContext.jsx";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.jsx";
 import * as auth from "../../utils/auth.js";
+import EditProfileModal from "../EditProfileModal/EditProfileModal.jsx";
 
 function App() {
   const [userData, setUserData] = useState({
@@ -127,6 +128,33 @@ function App() {
 
   const openSignInModal = () => {
     setActiveModal("signin");
+  };
+
+  const signOut = () => {
+    console.log("Wait come back!");
+    localStorage.clear();
+    navigate("/");
+    setUserData("");
+  };
+
+  const handleEditProfile = ({ name, avatar, token }) => {
+    console.log("editing profile imminent");
+    auth
+      .updateUserProfile(userData._id, userData.email, name, avatar, token)
+      .then((res) => {
+        console.log(res);
+        setUserData({ ...userData, name, avatar });
+        localStorage.setItem("jwt", res.token);
+        navigate("/profile");
+        closeActiveModal();
+      })
+      .catch(() => {
+        console.error();
+      });
+  };
+
+  const openEditProfileModal = () => {
+    setActiveModal("edit-profile");
   };
 
   useEffect(() => {
@@ -282,6 +310,9 @@ function App() {
                       onCardClick={handleCardClick}
                       clothingItems={clothingItems}
                       onAddClick={handleAddClick}
+                      handleEditProfile={handleEditProfile}
+                      openEditProfileModal={openEditProfileModal}
+                      signOut={signOut}
                     />
                   </ProtectedRoute>
                 }
@@ -300,6 +331,12 @@ function App() {
             handleSignIn={handleSignIn}
             onClose={closeActiveModal}
             isOpen={activeModal === "signin"}
+          />
+          <EditProfileModal
+            activeModal={activeModal}
+            onClose={closeActiveModal}
+            isOpen={activeModal === "edit-profile"}
+            handleEditProfile={handleEditProfile}
           />
           <AddItemModal
             activeModal={activeModal}

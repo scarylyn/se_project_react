@@ -1,4 +1,59 @@
-// Add the EditProfileModal component for editing user data.
-// The modal windows should be opened when the user clicks the “Edit profile”
-// button on the profile page. The current user’s data should be filled in the form.
-// Make an API call that sends new user name and the avatar URL to the server.
+import { useState, useContext, useEffect } from "react";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
+import ModalWithForm from "../ModalWithForm/ModalWithForm";
+
+export default function EditProfileModal({
+  isOpen,
+  onClose,
+  handleEditProfile,
+}) {
+  const token = localStorage.getItem("jwt");
+  const currentUser = useContext(CurrentUserContext);
+  const [name, setName] = useState("");
+  const [avatar, setAvatar] = useState("");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    handleEditProfile({ name, avatar, token });
+  }
+
+  useEffect(() => {
+    if (currentUser) {
+      setName(currentUser.name || "");
+      setAvatar(currentUser.avatar || "");
+    }
+  }, [currentUser, isOpen]);
+
+  return (
+    <ModalWithForm
+      title="Change profile data"
+      buttonText="Save changes"
+      isOpen={isOpen}
+      onClose={onClose}
+      onSubmit={handleSubmit}
+    >
+      <label className="modal__label">
+        Name *
+        <input
+          type="text"
+          className="modal__input"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Name"
+          required
+        />
+      </label>
+
+      <label className="modal__label">
+        Avatar URL
+        <input
+          type="url"
+          className="modal__input"
+          value={avatar}
+          onChange={(e) => setAvatar(e.target.value)}
+          placeholder="Avatar URL"
+        />
+      </label>
+    </ModalWithForm>
+  );
+}
