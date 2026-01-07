@@ -16,13 +16,11 @@ const LoginModal = ({ handleSignIn, isOpen, onClose }) => {
     }));
   };
 
-  const { resetForm, errors, isValid, isSubmitted } = useFormWithValidation();
+  const { errors, isValid, isSubmitted } = useFormWithValidation(data);
 
   function handleSubmit(evt) {
     evt.preventDefault();
     handleSignIn(data);
-    resetForm();
-    onClose();
   }
 
   return (

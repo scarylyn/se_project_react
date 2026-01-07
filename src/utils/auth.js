@@ -1,19 +1,5 @@
+import { handleServerResponse } from "./api";
 const baseUrl = "http://localhost:3001";
-
-export function checkToken(token) {
-  return fetch(`${baseUrl}/users`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `Bearer ${token}`,
-    },
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Error: ${res.status}`);
-  });
-}
 
 export const register = (email, password, name, avatar) => {
   return fetch(`${baseUrl}/signup`, {
@@ -22,9 +8,7 @@ export const register = (email, password, name, avatar) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ email, password, name, avatar }),
-  }).then((res) => {
-    return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
-  });
+  }).then(handleServerResponse);
 };
 
 export const login = (email, password) => {
@@ -34,9 +18,7 @@ export const login = (email, password) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ email, password }),
-  }).then((res) => {
-    return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
-  });
+  }).then(handleServerResponse);
 };
 
 export const checkTokenValidity = () => {
@@ -47,9 +29,7 @@ export const checkTokenValidity = () => {
       "Content-Type": "application/json",
       authorization: `Bearer ${token}`,
     },
-  }).then((res) => {
-    return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
-  });
+  }).then(handleServerResponse);
 };
 
 export function updateUserProfile(_id, email, name, avatar, token) {
@@ -60,7 +40,5 @@ export function updateUserProfile(_id, email, name, avatar, token) {
       authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ _id, email, name, avatar }),
-  }).then((res) => {
-    return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
-  });
+  }).then(handleServerResponse);
 }

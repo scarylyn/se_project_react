@@ -22,7 +22,6 @@ const RegisterModal = ({ handleRegistration, isOpen, onClose }) => {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    resetForm();
     handleRegistration(data);
   }
 
@@ -83,7 +82,7 @@ const RegisterModal = ({ handleRegistration, isOpen, onClose }) => {
           className={`modal__input${
             isSubmitted && errors.name ? " modal__input_invalid" : ""
           }`}
-          id="name"
+          id="register-name"
           placeholder="Name"
           value={data.name}
           onChange={handleChange}
@@ -95,7 +94,7 @@ const RegisterModal = ({ handleRegistration, isOpen, onClose }) => {
           </span>
         )}
       </label>
-      <label htmlFor="imageUrl" className="modal__label">
+      <label htmlFor="avatar" className="modal__label">
         Avatar URL*{" "}
         <input
           name="avatar"

@@ -26,10 +26,7 @@ import EditProfileModal from "../EditProfileModal/EditProfileModal.jsx";
 
 function App() {
   const navigate = useNavigate();
-  const [userData, setUserData] = useState({
-    name: "default",
-    password: "default",
-  });
+  const [userData, setUserData] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [weatherData, setWeatherData] = useState({
     city: "Loading...",
@@ -45,19 +42,20 @@ function App() {
 
   useEffect(() => {
     const token = localStorage.getItem("jwt");
-
-    if (token) {
-      auth
-        .checkToken(token)
-        .then((user) => {
-          setCurrentUser(user);
-          setIsLoggedIn(true);
-        })
-        .catch((err) => {
-          console.error("Token validation failed:", err);
-          localStorage.removeItem("jwt");
-        });
+    if (!token) {
+      return;
     }
+
+    auth
+      .checkTokenValidity()
+      .then((res) => {
+        setUserData(res.user);
+        setIsLoggedIn(true);
+      })
+      .catch((error) => {
+        setIsLoggedIn(false);
+        console.error(error);
+      });
   }, []);
 
   const handleToggleSwitchChange = () => {
@@ -171,6 +169,8 @@ function App() {
   const signOut = () => {
     console.log("Wait come back!");
     localStorage.removeItem("jwt");
+    setIsLoggedIn(false);
+    setUserData(null);
     navigate("/");
     setUserData("");
   };
@@ -185,33 +185,13 @@ function App() {
       .updateUserProfile(userData._id, userData.email, name, avatar, token)
       .then((res) => {
         console.log(res);
-        setUserData({ ...userData, name, avatar });
-        localStorage.setItem("jwt", res.token);
-        navigate("/profile");
+        setUserData({ ...userData, name, avatar, token });
         closeActiveModal();
       })
       .catch(() => {
         console.error();
       });
   };
-
-  useEffect(() => {
-    const token = localStorage.getItem("jwt");
-    if (!token) {
-      return;
-    }
-
-    auth
-      .checkTokenValidity()
-      .then((res) => {
-        setUserData(res.user);
-        setIsLoggedIn(true);
-      })
-      .catch((error) => {
-        setIsLoggedIn(false);
-        console.error(error);
-      });
-  }, []);
 
   useEffect(() => {
     if (activeModal) {
@@ -314,7 +294,6 @@ function App() {
               handleAddClick={handleAddClick}
               weatherData={weatherData}
               isLoggedIn={isLoggedIn}
-              value={userData}
               openRegistrationModal={openRegistrationModal}
               openSignInModal={openSignInModal}
             />
@@ -337,6 +316,7 @@ function App() {
                     handleCardClick={handleCardClick}
                     clothingItems={clothingItems}
                     handleCardLike={handleCardLike}
+                    isLoggedIn={isLoggedIn}
                   />
                 }
               />
