@@ -14,7 +14,7 @@ export default function EditProfileModal({
 
   function handleSubmit(e) {
     e.preventDefault();
-    handleEditProfile({ name, avatar });
+    handleEditProfile({ name, avatar, token });
   }
 
   useEffect(() => {
