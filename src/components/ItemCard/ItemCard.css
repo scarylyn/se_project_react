@@ -15,14 +15,40 @@
   background-color: rgba(255, 255, 255, 1);
   border-radius: 4px;
   padding: 2px 12px;
-  position: absolute;
-  top: 15px;
   left: 125px;
   margin: 0;
 }
+
 .card__image {
   border-radius: 19px;
   width: 100%;
   max-height: 325px;
   border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.card__title {
+  display: flex;
+  flex-direction: row;
+  height: 24px;
+  position: absolute;
+  top: 15px;
+  gap: 10px;
+}
+
+.card__like-button {
+  display: flex;
+  height: 24px;
+  width: 20px;
+  background-image: url("/not-liked.svg");
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+}
+
+.card__like-button_active {
+  background-image: url("/liked.svg");
 }

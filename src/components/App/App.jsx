@@ -43,6 +43,23 @@ function App() {
   const [clothingItems, setClothingItems] = useState([]);
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
 
+  useEffect(() => {
+    const token = localStorage.getItem("jwt");
+
+    if (token) {
+      auth
+        .checkToken(token)
+        .then((user) => {
+          setCurrentUser(user);
+          setIsLoggedIn(true);
+        })
+        .catch((err) => {
+          console.error("Token validation failed:", err);
+          localStorage.removeItem("jwt");
+        });
+    }
+  }, []);
+
   const handleToggleSwitchChange = () => {
     setCurrentTemperatureUnit(currentTemperatureUnit === "F" ? "C" : "F");
   };
@@ -80,22 +97,22 @@ function App() {
       .catch(console.error);
   };
 
-  const handleCardLike = ({ id, isLiked }) => {
+  const handleCardLike = ({ itemId, isLiked }) => {
     const token = localStorage.getItem("jwt");
     !isLiked
       ? api
-          .addCardLike({ id, isLiked, token })
+          .addCardLike({ itemId, isLiked, token })
           .then((updatedCard) => {
             setClothingItems((cards) =>
-              cards.map((item) => (item._id === id ? updatedCard : item))
+              cards.map((item) => (item._id === itemId ? updatedCard : item))
             );
           })
           .catch((err) => console.log(err))
       : api
-          .removeCardLike({ id, isLiked, token })
+          .removeCardLike({ itemId, isLiked, token })
           .then((updatedCard) => {
             setClothingItems((cards) =>
-              cards.map((item) => (item._id === id ? updatedCard : item))
+              cards.map((item) => (item._id === itemId ? updatedCard : item))
             );
           })
           .catch((err) => console.log(err));
@@ -153,7 +170,7 @@ function App() {
 
   const signOut = () => {
     console.log("Wait come back!");
-    localStorage.clear();
+    localStorage.removeItem("jwt");
     navigate("/");
     setUserData("");
   };
@@ -332,6 +349,7 @@ function App() {
                       onCardClick={handleCardClick}
                       clothingItems={clothingItems}
                       onAddClick={handleAddClick}
+                      handleCardLike={handleCardLike}
                       handleEditProfile={handleEditProfile}
                       openEditProfileModal={openEditProfileModal}
                       signOut={signOut}

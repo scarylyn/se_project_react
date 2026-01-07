@@ -10,6 +10,7 @@ export default function Profile({
   onAddClick,
   openEditProfileModal,
   signOut,
+  handleCardLike,
 }) {
   const currentUser = useContext(CurrentUserContext);
   return (
@@ -23,6 +24,7 @@ export default function Profile({
         onCardClick={onCardClick}
         clothingItems={clothingItems}
         onAddClick={onAddClick}
+        handleCardLike={handleCardLike}
       />
     </section>
   );

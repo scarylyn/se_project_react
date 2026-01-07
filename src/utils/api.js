@@ -28,33 +28,23 @@ export const addItem = ({ name, imageUrl, weather }) => {
   }).then(handleServerResponse);
 };
 
-export const addCardLike = ({ id, isLiked, token }) => {
-  return fetch(`${baseUrl}/items/${id}/likes`, {
-    method: "POST",
+export const addCardLike = ({ itemId, token, isLiked }) => {
+  return fetch(`${baseUrl}/items/${itemId}/likes`, {
+    method: "PUT",
     headers: {
       "Content-type": "application/json",
       authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({
-      id,
-      isLiked,
-      token,
-    }),
   }).then(handleServerResponse);
 };
 
-export const removeCardLike = ({ id, isLiked, token }) => {
-  return fetch(`${baseUrl}/items/${id}/likes`, {
+export const removeCardLike = ({ itemId, token, isLiked }) => {
+  return fetch(`${baseUrl}/items/${itemId}/likes`, {
     method: "DELETE",
     headers: {
       "Content-type": "application/json",
       authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({
-      id,
-      isLiked,
-      token,
-    }),
   }).then(handleServerResponse);
 };
 

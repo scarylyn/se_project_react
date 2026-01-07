@@ -1,5 +1,20 @@
 const baseUrl = "http://localhost:3001";
 
+export function checkToken(token) {
+  return fetch(`${baseUrl}/users`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Error: ${res.status}`);
+  });
+}
+
 export const register = (email, password, name, avatar) => {
   return fetch(`${baseUrl}/signup`, {
     method: "POST",
