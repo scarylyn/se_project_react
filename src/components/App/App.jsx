@@ -17,13 +17,15 @@ import Footer from "../Footer/Footer";
 import { coordinates, apiKey } from "../../utils/constants";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import { getItems, addItem, removeItem } from "../../utils/api.js";
+import * as auth from "../../utils/auth.js";
+import * as api from "../../utils/api.js";
 import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext.jsx";
 import CurrentUserContext from "../../contexts/CurrentUserContext.jsx";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.jsx";
-import * as auth from "../../utils/auth.js";
 import EditProfileModal from "../EditProfileModal/EditProfileModal.jsx";
 
 function App() {
+  const navigate = useNavigate();
   const [userData, setUserData] = useState({
     name: "default",
     password: "default",
@@ -54,6 +56,16 @@ function App() {
     setSelectedCard(card);
   };
 
+  const closeActiveModal = () => {
+    setActiveModal("");
+  };
+
+  const handleEscape = (evt) => {
+    if (evt.key === "Escape") {
+      closeActiveModal();
+    }
+  };
+
   const onAddItem = (inputValues) => {
     const newCardData = {
       name: inputValues.name,
@@ -68,6 +80,27 @@ function App() {
       .catch(console.error);
   };
 
+  const handleCardLike = ({ id, isLiked }) => {
+    const token = localStorage.getItem("jwt");
+    !isLiked
+      ? api
+          .addCardLike(id, token)
+          .then((updatedCard) => {
+            setClothingItems((cards) =>
+              cards.map((item) => (item._id === id ? updatedCard : item))
+            );
+          })
+          .catch((err) => console.log(err))
+      : api
+          .removeCardLike(id, token)
+          .then((updatedCard) => {
+            setClothingItems((cards) =>
+              cards.map((item) => (item._id === id ? updatedCard : item))
+            );
+          })
+          .catch((err) => console.log(err));
+  };
+
   const deleteItemHandler = (data) => {
     const filteredArray = clothingItems.filter((item) => {
       return item._id !== data._id;
@@ -80,17 +113,9 @@ function App() {
       .catch(console.error);
   };
 
-  const closeActiveModal = () => {
-    setActiveModal("");
+  const openRegistrationModal = () => {
+    setActiveModal("register");
   };
-
-  const handleEscape = (evt) => {
-    if (evt.key === "Escape") {
-      closeActiveModal();
-    }
-  };
-
-  const navigate = useNavigate();
 
   const handleRegistration = ({ email, password, name, avatar }) => {
     auth
@@ -105,8 +130,8 @@ function App() {
       });
   };
 
-  const openRegistrationModal = () => {
-    setActiveModal("register");
+  const openSignInModal = () => {
+    setActiveModal("signin");
   };
 
   const handleSignIn = ({ email, password }) => {
@@ -126,15 +151,15 @@ function App() {
       .catch(console.error);
   };
 
-  const openSignInModal = () => {
-    setActiveModal("signin");
-  };
-
   const signOut = () => {
     console.log("Wait come back!");
     localStorage.clear();
     navigate("/");
     setUserData("");
+  };
+
+  const openEditProfileModal = () => {
+    setActiveModal("edit-profile");
   };
 
   const handleEditProfile = ({ name, avatar, token }) => {
@@ -151,10 +176,6 @@ function App() {
       .catch(() => {
         console.error();
       });
-  };
-
-  const openEditProfileModal = () => {
-    setActiveModal("edit-profile");
   };
 
   useEffect(() => {
@@ -273,7 +294,7 @@ function App() {
         <div className="page">
           <div className="page__content">
             <Header
-              onAddClick={handleAddClick}
+              handleAddClick={handleAddClick}
               weatherData={weatherData}
               isLoggedIn={isLoggedIn}
               value={userData}
@@ -298,6 +319,7 @@ function App() {
                     weatherData={weatherData}
                     handleCardClick={handleCardClick}
                     clothingItems={clothingItems}
+                    handleCardLike={handleCardLike}
                   />
                 }
               />
@@ -348,6 +370,7 @@ function App() {
             isLoggedIn={isLoggedIn}
             activeModal={activeModal}
             card={selectedCard}
+            onCardLike={handleCardLike}
             onClose={closeActiveModal}
             isOpen={activeModal === "preview"}
             onDelete={deleteItemHandler}

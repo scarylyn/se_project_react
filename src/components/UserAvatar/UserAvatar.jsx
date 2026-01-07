@@ -12,7 +12,6 @@ function UserAvatar({
 
     return (
       <div className="header__user-container">
-        {/* TODO - fix handleAddClick */}
         <button
           type="button"
           onClick={handleAddClick}
