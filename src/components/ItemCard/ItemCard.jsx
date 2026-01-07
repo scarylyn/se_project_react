@@ -16,7 +16,7 @@ function ItemCard({ item, onCardClick, handleCardLike }) {
   };
 
   const onCardLike = () => {
-    handleCardLike({ id: item.id, isLiked });
+    handleCardLike({ id: item._id, isLiked });
   };
 
   return (

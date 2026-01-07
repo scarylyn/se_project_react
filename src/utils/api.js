@@ -1,8 +1,11 @@
 const baseUrl = "http://localhost:3001";
-const headers = { "Content-type": "application/json" };
 
 export const getItems = () => {
-  return fetch(`${baseUrl}/items`, { headers }).then(handleServerResponse);
+  return fetch(`${baseUrl}/items`, {
+    headers: {
+      "Content-type": "application/json",
+    },
+  }).then(handleServerResponse);
 };
 
 export const handleServerResponse = (res) => {
@@ -25,11 +28,42 @@ export const addItem = ({ name, imageUrl, weather }) => {
   }).then(handleServerResponse);
 };
 
+export const addCardLike = ({ id, isLiked, token }) => {
+  return fetch(`${baseUrl}/items/${id}/likes`, {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      id,
+      isLiked,
+      token,
+    }),
+  }).then(handleServerResponse);
+};
+
+export const removeCardLike = ({ id, isLiked, token }) => {
+  return fetch(`${baseUrl}/items/${id}/likes`, {
+    method: "DELETE",
+    headers: {
+      "Content-type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      id,
+      isLiked,
+      token,
+    }),
+  }).then(handleServerResponse);
+};
+
 export const removeItem = (itemID) => {
   const token = localStorage.getItem("jwt");
   return fetch(`${baseUrl}/items/${itemID}`, {
     method: "DELETE",
     headers: {
+      "Content-type": "application/json",
       authorization: `Bearer ${token}`,
     },
   }).then(handleServerResponse);

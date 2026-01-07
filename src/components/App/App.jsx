@@ -84,7 +84,7 @@ function App() {
     const token = localStorage.getItem("jwt");
     !isLiked
       ? api
-          .addCardLike(id, token)
+          .addCardLike({ id, isLiked, token })
           .then((updatedCard) => {
             setClothingItems((cards) =>
               cards.map((item) => (item._id === id ? updatedCard : item))
@@ -92,7 +92,7 @@ function App() {
           })
           .catch((err) => console.log(err))
       : api
-          .removeCardLike(id, token)
+          .removeCardLike({ id, isLiked, token })
           .then((updatedCard) => {
             setClothingItems((cards) =>
               cards.map((item) => (item._id === id ? updatedCard : item))
