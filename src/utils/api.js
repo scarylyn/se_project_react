@@ -1,4 +1,7 @@
-const baseUrl = "http://localhost:3001";
+const baseUrl =
+  process.env.NODE_ENV === "production"
+    ? "https://api.frcstclst.home.kg"
+    : "http://localhost:3001";
 
 export const getItems = () => {
   return fetch(`${baseUrl}/items`, {
