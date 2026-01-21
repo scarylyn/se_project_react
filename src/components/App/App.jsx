@@ -102,7 +102,7 @@ function App() {
           .addCardLike({ itemId, isLiked, token })
           .then((updatedCard) => {
             setClothingItems((cards) =>
-              cards.map((item) => (item._id === itemId ? updatedCard : item))
+              cards.map((item) => (item._id === itemId ? updatedCard : item)),
             );
           })
           .catch((err) => console.log(err))
@@ -110,7 +110,7 @@ function App() {
           .removeCardLike({ itemId, isLiked, token })
           .then((updatedCard) => {
             setClothingItems((cards) =>
-              cards.map((item) => (item._id === itemId ? updatedCard : item))
+              cards.map((item) => (item._id === itemId ? updatedCard : item)),
             );
           })
           .catch((err) => console.log(err));
@@ -160,14 +160,16 @@ function App() {
         setUserData(res.user);
         setIsLoggedIn(true);
         localStorage.setItem("jwt", res.token);
-        navigate("/");
+        navigate("/profile");
+        console.log(res);
+        console.log("You've been signed in");
         closeActiveModal();
       })
       .catch(console.error);
   };
 
   const signOut = () => {
-    console.log("Wait come back!");
+    console.log("You've been signed out");
     localStorage.removeItem("jwt");
     setIsLoggedIn(false);
     setUserData(null);
@@ -234,7 +236,7 @@ function App() {
             // Fallback to default coordinates if denied or error
             console.warn(
               "Geolocation error, using default coordinates:",
-              error
+              error,
             );
             getWeather(coordinates, apiKey)
               .then((data) => {
@@ -251,7 +253,7 @@ function App() {
                   isDay: true,
                 });
               });
-          }
+          },
         );
       } else {
         // Geolocation not supported

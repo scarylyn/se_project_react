@@ -4,6 +4,11 @@ import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 export default function SideBar({ openEditProfileModal, signOut }) {
   const currentUser = useContext(CurrentUserContext);
+
+  if (!currentUser) {
+    return null;
+  }
+
   return (
     <aside className="sidebar">
       <div className="sidebar__profile">
