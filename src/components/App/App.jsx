@@ -49,7 +49,7 @@ function App() {
     auth
       .checkTokenValidity()
       .then((res) => {
-        setUserData(res.user);
+        setUserData(res);
         setIsLoggedIn(true);
       })
       .catch((error) => {
@@ -157,13 +157,14 @@ function App() {
     auth
       .login(email, password)
       .then((res) => {
-        setUserData(res.user);
-        setIsLoggedIn(true);
         localStorage.setItem("jwt", res.token);
-        navigate("/profile");
-        console.log(res);
-        console.log("You've been signed in");
-        closeActiveModal();
+        auth.checkTokenValidity().then((res) => {
+          setUserData(res);
+          setIsLoggedIn(true);
+          console.log("You've been signed in");
+          navigate("/profile");
+          closeActiveModal();
+        });
       })
       .catch(console.error);
   };
